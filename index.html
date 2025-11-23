@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GreenGarden Lite</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 开始/选种界面 -->
+        <div id="start-screen" class="overlay hidden">
+            <div class="start-content">
+                <h1>GreenGarden Lite</h1>
+                <p>请选择要种植的作物</p>
+                <div id="crop-list" class="crop-list"></div>
+                <button id="journal-btn-start" class="secondary-btn">查看图鉴</button>
+            </div>
+        </div>
+
+        <header>
+            <h1>GreenGarden Lite</h1>
+            <div class="status-bar">
+                <span id="day-display">第 1 天</span>
+                <span id="term-display">节气: --</span>
+            </div>
+        </header>
+
+        <main>
+            <div class="weather-card">
+                <div class="weather-icon" id="weather-icon">☀️</div>
+                <div class="weather-info">
+                    <h3 id="weather-name">晴空微风</h3>
+                    <p id="weather-desc">阳光稳定，蒸发稍快</p>
+                </div>
+                <span id="weather-timer" class="weather-timer">剩余 2 天</span>
+            </div>
+
+            <div class="crop-container">
+                <div id="crop-visual" class="crop-visual stage-0"></div>
+                <div class="stage-info">
+                    <h2 id="stage-name">播种期</h2>
+                    <div class="progress-bar-bg">
+                        <div id="progress-bar" class="progress-bar-fill" style="width: 0%"></div>
+                    </div>
+                    <span id="progress-text">0%</span>
+                </div>
+            </div>
+
+            <div class="streak-card">
+                <div class="streak-title">🌈 连击养护</div>
+                <div class="streak-values">当前 <span id="streak-current">0</span> 轮 ｜ 最高 <span id="streak-best">0</span> 轮</div>
+            </div>
+
+            <div class="challenge-card">
+                <div class="challenge-header">🎯 本阶段照料挑战</div>
+                <p id="challenge-desc">保持环境稳定以获得奖励</p>
+                <div class="challenge-progress">
+                    <div class="progress-bar-bg slim">
+                        <div id="challenge-progress-bar" class="progress-bar-fill challenge-fill" style="width: 0%"></div>
+                    </div>
+                    <span id="challenge-progress-text">0 / 0</span>
+                </div>
+                <span id="challenge-status" class="challenge-status pending">进行中</span>
+            </div>
+
+            <div class="controls-container">
+                <div class="control-group">
+                    <label><span class="icon-placeholder">💧</span> 水分 <span id="water-val">50</span>%</label>
+                    <div class="control-adjusters">
+                        <button class="control-btn control-btn--minus" data-type="water" data-delta="-3" aria-label="减少水分">-</button>
+                        <div class="control-display" id="water-display">50%</div>
+                        <button class="control-btn control-btn--plus" data-type="water" data-delta="3" aria-label="增加水分">+</button>
+                    </div>
+                    <div class="control-meter" aria-hidden="true">
+                        <div id="water-meter-fill" class="control-meter-fill water-fill" style="width: 50%"></div>
+                    </div>
+                    <div class="optimal-range" id="water-optimal"></div>
+                </div>
+                <div class="control-group">
+                    <label><span class="icon-placeholder">☀️</span> 光照 <span id="light-val">50</span>%</label>
+                    <div class="control-adjusters">
+                        <button class="control-btn control-btn--minus" data-type="light" data-delta="-3" aria-label="减少光照">-</button>
+                        <div class="control-display" id="light-display">50%</div>
+                        <button class="control-btn control-btn--plus" data-type="light" data-delta="3" aria-label="增加光照">+</button>
+                    </div>
+                    <div class="control-meter" aria-hidden="true">
+                        <div id="light-meter-fill" class="control-meter-fill light-fill" style="width: 50%"></div>
+                    </div>
+                    <div class="optimal-range" id="light-optimal"></div>
+                </div>
+                <div id="optimal-hint" class="optimal-hint">
+                    💡 照料提示：水分 <span id="hint-water-text">--</span> ｜ 光照 <span id="hint-light-text">--</span>
+                </div>
+            </div>
+
+            <div id="event-area" class="event-area hidden">
+                <button id="event-btn" class="event-btn">⚠️ 发现病虫害!</button>
+            </div>
+        </main>
+
+        <footer>
+            <button id="share-btn">分享二维码</button>
+            <button id="journal-btn-game">图鉴</button>
+            <button id="restart-btn" style="color: #F44336; border-color: #F44336;">重开</button>
+        </footer>
+
+        <!-- 模态框：知识卡片/答题 -->
+        <div id="modal" class="modal hidden">
+            <div class="modal-content">
+                <h3 id="modal-title">标题</h3>
+                <div class="modal-body">
+                    <div class="knowledge-section" id="knowledge-section">
+                        <h4>🏛️ 传统技艺</h4>
+                        <p id="tradition-text">...</p>
+                        <h4>🔬 现代新质</h4>
+                        <p id="modern-text">...</p>
+                    </div>
+                    <div class="quiz-section" id="quiz-section">
+                        <p id="quiz-question">问题?</p>
+                        <div id="quiz-options" class="quiz-options"></div>
+                    </div>
+                    <div id="feedback-section" class="feedback-section hidden">
+                        <div id="feedback-icon" class="feedback-icon"></div>
+                        <h3 id="feedback-title"></h3>
+                        <p id="feedback-text"></p>
+                        <button id="feedback-btn">继续</button>
+                    </div>
+                    <div id="qr-section" class="hidden">
+                        <canvas id="qr-canvas"></canvas>
+                        <p>长按保存图片分享</p>
+                    </div>
+                    <div id="journal-section" class="hidden">
+                        <div class="journal-header">
+                            <h4>知识图鉴</h4>
+                            <p>解锁传统与现代农业智慧，构筑你的绿色图书馆。</p>
+                            <div id="journal-filters" class="journal-filters"></div>
+                        </div>
+                        <div class="journal-wrapper">
+                            <div id="journal-list" class="journal-gallery"></div>
+                            <div id="journal-detail" class="journal-detail">
+                                <div class="journal-detail-thumb" id="journal-detail-thumb"></div>
+                                <div class="journal-detail-meta">
+                                    <span id="journal-detail-stage" class="journal-detail-stage">阶段信息</span>
+                                    <span id="journal-detail-status" class="journal-detail-status waiting">待选择</span>
+                                </div>
+                                <h4 id="journal-detail-title" class="journal-detail-title">选择知识卡查看详情</h4>
+                                <p id="journal-detail-note" class="journal-detail-note">成长旅程会揭示更多独家内容。</p>
+                                <div class="journal-insight-grid">
+                                    <div class="journal-insight">
+                                        <h5>🏛️ 传统技艺</h5>
+                                        <p id="journal-detail-tradition">从左侧选择一张卡片以回顾传统经验。</p>
+                                    </div>
+                                    <div class="journal-insight">
+                                        <h5>🔬 现代新质</h5>
+                                        <p id="journal-detail-modern">完成对应阶段后即可解锁现代技术亮点。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="harvest-section" class="hidden">
+                        <div class="harvest-visual" id="harvest-visual">🎉</div>
+                        <h4 id="harvest-title">恭喜收获！</h4>
+                        <p id="harvest-summary">...</p>
+                        <button id="harvest-share-btn" class="primary-btn">分享成果</button>
+                        <div id="harvest-card-container" class="hidden">
+                            <img id="harvest-card-preview" alt="收获分享卡片预览">
+                            <button id="harvest-card-download" class="secondary-btn">保存卡片</button>
+                        </div>
+                    </div>
+                </div>
+                <button id="modal-close-btn">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="main.js"></script>
+    <!-- 动态加载 qrious -->
+    <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js" async></script>
+</body>
+</html>

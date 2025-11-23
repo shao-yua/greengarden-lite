@@ -1,0 +1,40 @@
+[
+  {
+    "id": "tomato",
+    "name": "番茄",
+    "emoji": "🍅",
+    "desc": "喜温作物，光照要求高，需注意整枝打杈。",
+    "baseRate": 1.5,
+    "stages": [
+      { "name": "播种期", "duration": 100 },
+      { "name": "幼苗期", "duration": 100 },
+      { "name": "生长期", "duration": 100 },
+      { "name": "开花期", "duration": 100 },
+      { "name": "结果期", "duration": 100 },
+      { "name": "成熟期", "duration": 100 }
+    ],
+    "optimal": {
+      "water": [40, 70],
+      "light": [50, 80]
+    }
+  },
+  {
+    "id": "cucumber",
+    "name": "黄瓜",
+    "emoji": "🥒",
+    "desc": "喜湿怕涝，喜温不耐寒，生长速度快。",
+    "baseRate": 1.8,
+    "stages": [
+      { "name": "播种期", "duration": 80 },
+      { "name": "幼苗期", "duration": 80 },
+      { "name": "抽蔓期", "duration": 80 },
+      { "name": "开花期", "duration": 80 },
+      { "name": "结瓜期", "duration": 80 },
+      { "name": "采收期", "duration": 80 }
+    ],
+    "optimal": {
+      "water": [60, 90],
+      "light": [40, 70]
+    }
+  }
+]
