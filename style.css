@@ -35,7 +35,7 @@ body {
 }
 
 header {
-    padding: 15px;
+    padding: 10px 12px;
     background-color: var(--primary-color);
     color: white;
     display: flex;
@@ -43,49 +43,65 @@ header {
     align-items: center;
 }
 
-h1 { margin: 0; font-size: 1.2rem; }
-.status-bar { font-size: 0.9rem; }
+h1 { margin: 0; font-size: 1.05rem; }
+.status-bar { font-size: 0.82rem; }
 
 main {
     flex: 1;
-    padding: 20px;
+    padding: 12px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
     overflow-y: auto;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
 }
 
 .crop-container {
     text-align: center;
-    padding: 20px;
+    padding: 10px;
     background: rgba(232, 245, 233, 0.75);
-    border-radius: 18px;
+    border-radius: 12px;
     border: 1px solid rgba(76, 175, 80, 0.12);
+}
+
+.stage-info h2 {
+    margin: 0 0 4px 0;
+    font-size: 1rem;
+}
+
+.stage-info #progress-text {
+    font-size: 0.8rem;
+    color: #666;
 }
 
 .weather-card {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     background: linear-gradient(135deg, rgba(33, 150, 243, 0.1), rgba(129, 199, 132, 0.15));
-    border-radius: 12px;
-    padding: 16px;
+    border-radius: 10px;
+    padding: 10px;
     border: 1px solid rgba(33, 150, 243, 0.25);
 }
 
 .weather-icon {
-    font-size: 2.5rem;
+    font-size: 2rem;
 }
 
 .weather-info h3 {
     margin: 0;
-    font-size: 1.05rem;
+    font-size: 0.95rem;
     color: #1565c0;
 }
 
 .weather-info p {
-    margin: 4px 0 0 0;
-    font-size: 0.85rem;
+    margin: 2px 0 0 0;
+    font-size: 0.78rem;
     color: #335158;
 }
 
@@ -100,14 +116,14 @@ main {
 }
 
 .crop-visual {
-    width: 210px;
-    height: 210px;
-    margin: 0 auto 12px;
-    border-radius: 22px;
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 6px;
+    border-radius: 16px;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    box-shadow: 0 10px 24px rgba(33, 150, 243, 0.18);
+    box-shadow: 0 6px 14px rgba(33, 150, 243, 0.14);
     position: relative;
     overflow: hidden;
 }
@@ -121,11 +137,11 @@ main {
 .stage-5 { background-color: #F44336; } /* 成熟 */
 
 .progress-bar-bg {
-    height: 10px;
+    height: 6px;
     background: #ccc;
-    border-radius: 5px;
+    border-radius: 3px;
     overflow: hidden;
-    margin-top: 10px;
+    margin-top: 6px;
 }
 
 .progress-bar-fill {
@@ -136,18 +152,29 @@ main {
 
 .controls-container {
     background: #fff;
-    padding: 15px;
-    border-radius: 12px;
+    padding: 10px;
+    border-radius: 10px;
     border: 1px solid #eee;
+}
+
+.controls-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 6px;
 }
 
 .streak-card,
 .challenge-card {
     background: #fff;
-    border-radius: 12px;
-    padding: 15px;
+    border-radius: 10px;
+    padding: 8px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     border: 1px solid rgba(76, 175, 80, 0.15);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 60px;
 }
 
 .streak-card {
@@ -158,16 +185,18 @@ main {
 .streak-title {
     color: var(--primary-color);
     font-weight: bold;
-    margin: 0 0 6px 0;
+    font-size: 0.85rem;
+    margin: 0 0 3px 0;
+    text-align: center;
 }
 
 .streak-values {
-    font-size: 0.9rem;
+    font-size: 0.78rem;
     color: #347a43;
+    text-align: center;
 }
 
 .challenge-card {
-
 .crop-thumbnail {
     width: 110px;
     height: 110px;
@@ -178,66 +207,50 @@ main {
     margin-bottom: 12px;
     box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
 }
-    border-color: rgba(33, 150, 243, 0.25);
-}
 
 .challenge-header {
     font-weight: bold;
+    font-size: 0.85rem;
     color: #1565c0;
-    margin: 0 0 8px 0;
+    margin: 0 0 4px 0;
+    text-align: center;
 }
 
 .challenge-card p {
-    margin: 0 0 12px 0;
-    font-size: 0.9rem;
+    margin: 0 0 6px 0;
+    font-size: 0.75rem;
     color: #455a64;
+    text-align: center;
 }
 
 .challenge-progress {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 6px;
+}
+
+.challenge-progress-text {
+    font-size: 0.75rem;
+    white-space: nowrap;
 }
 
 .progress-bar-bg.slim {
-    height: 8px;
+    height: 6px;
     background: #e3f2fd;
     border-radius: 999px;
     flex: 1;
     overflow: hidden;
 }
 
-.challenge-fill {
-    background: var(--accent-color);
-}
-
-.challenge-status {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 4px 12px;
-    border-radius: 999px;
-    font-size: 0.8rem;
-    font-weight: bold;
-}
-
-.challenge-status.pending {
-    background: #fff3cd;
-    color: #b28704;
-}
-
-.challenge-status.completed {
-    background: #e8f5e9;
-    color: #2e7d32;
-}
-
 .control-group {
-    margin-bottom: 20px;
+    margin-bottom: 0;
 }
 
 .control-group label {
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
+    display: block;
+    text-align: center;
+    margin-bottom: 4px;
+    font-size: 0.85rem;
     font-weight: bold;
 }
 
@@ -245,22 +258,22 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    padding: 10px 0;
+    gap: 6px;
+    padding: 4px 0;
 }
 
 .control-btn {
-    width: 42px;
-    height: 42px;
-    border-radius: 14px;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
     border: 1px solid rgba(21, 101, 192, 0.35);
     background: #ffffff;
     color: #1565c0;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: bold;
     cursor: pointer;
     transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
-    box-shadow: 0 3px 8px rgba(21, 101, 192, 0.12);
+    box-shadow: 0 2px 6px rgba(21, 101, 192, 0.1);
 }
 
 .control-btn:active {
@@ -279,24 +292,25 @@ main {
 }
 
 .control-display {
-    min-width: 72px;
-    padding: 6px 12px;
-    border-radius: 16px;
+    min-width: 56px;
+    padding: 4px 8px;
+    border-radius: 14px;
     background: rgba(33, 150, 243, 0.12);
     color: #1565c0;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 0.9rem;
     text-align: center;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.4px;
 }
 
 .control-meter {
     width: 100%;
-    height: 10px;
-    border-radius: 8px;
+    height: 6px;
+    border-radius: 6px;
     background: rgba(144, 202, 249, 0.35);
     overflow: hidden;
     position: relative;
+    margin-top: 4px;
 }
 
 .control-meter-fill {
@@ -342,11 +356,11 @@ input[type=range] {
 }
 
 .optimal-hint {
-    margin-top: 15px;
-    padding: 10px;
+    margin-top: 0;
+    padding: 6px;
     background-color: #e3f2fd;
-    border-radius: 8px;
-    font-size: 0.85rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
     color: #1565c0;
     text-align: center;
     border: 1px solid #bbdefb;
@@ -354,16 +368,16 @@ input[type=range] {
 
 .event-area {
     text-align: center;
-    min-height: 50px;
+    min-height: 36px;
 }
 
 .event-btn {
     background: var(--danger-color);
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 20px;
-    font-size: 1rem;
+    padding: 8px 16px;
+    border-radius: 18px;
+    font-size: 0.9rem;
     animation: pulse 1s infinite;
     cursor: pointer;
 }
@@ -448,22 +462,22 @@ input[type=range] {
 }
 
 footer {
-    padding: 15px;
+    padding: 10px 12px;
     text-align: center;
     border-top: 1px solid #eee;
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 6px;
 }
 
 footer button {
     background: transparent;
     border: 1px solid var(--primary-color);
     color: var(--primary-color);
-    padding: 8px 12px;
+    padding: 6px 10px;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 0.82rem;
 }
 
 #journal-btn-game,

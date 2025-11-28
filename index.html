@@ -47,50 +47,50 @@
                 </div>
             </div>
 
-            <div class="streak-card">
-                <div class="streak-title">🌈 连击养护</div>
-                <div class="streak-values">当前 <span id="streak-current">0</span> 轮 ｜ 最高 <span id="streak-best">0</span> 轮</div>
-            </div>
-
-            <div class="challenge-card">
-                <div class="challenge-header">🎯 本阶段照料挑战</div>
-                <p id="challenge-desc">保持环境稳定以获得奖励</p>
-                <div class="challenge-progress">
-                    <div class="progress-bar-bg slim">
-                        <div id="challenge-progress-bar" class="progress-bar-fill challenge-fill" style="width: 0%"></div>
-                    </div>
-                    <span id="challenge-progress-text">0 / 0</span>
+            <div class="stats-grid">
+                <div class="streak-card">
+                    <div class="streak-title">🌈 连击</div>
+                    <div class="streak-values"><span id="streak-current">0</span> / 最高 <span id="streak-best">0</span></div>
                 </div>
-                <span id="challenge-status" class="challenge-status pending">进行中</span>
+
+                <div class="challenge-card">
+                    <div class="challenge-header">🎯 挑战</div>
+                    <div class="challenge-progress">
+                        <div class="progress-bar-bg slim">
+                            <div id="challenge-progress-bar" class="progress-bar-fill challenge-fill" style="width: 0%"></div>
+                        </div>
+                        <span id="challenge-progress-text">0/0</span>
+                    </div>
+                </div>
             </div>
 
             <div class="controls-container">
-                <div class="control-group">
-                    <label><span class="icon-placeholder">💧</span> 水分 <span id="water-val">50</span>%</label>
-                    <div class="control-adjusters">
-                        <button class="control-btn control-btn--minus" data-type="water" data-delta="-3" aria-label="减少水分">-</button>
-                        <div class="control-display" id="water-display">50%</div>
-                        <button class="control-btn control-btn--plus" data-type="water" data-delta="3" aria-label="增加水分">+</button>
+                <div class="controls-grid">
+                    <div class="control-group">
+                        <label>💧 水分</label>
+                        <div class="control-adjusters">
+                            <button class="control-btn control-btn--minus" data-type="water" data-delta="-3" aria-label="减少水分">-</button>
+                            <div class="control-display" id="water-display">50%</div>
+                            <button class="control-btn control-btn--plus" data-type="water" data-delta="3" aria-label="增加水分">+</button>
+                        </div>
+                        <div class="control-meter" aria-hidden="true">
+                            <div id="water-meter-fill" class="control-meter-fill water-fill" style="width: 50%"></div>
+                        </div>
                     </div>
-                    <div class="control-meter" aria-hidden="true">
-                        <div id="water-meter-fill" class="control-meter-fill water-fill" style="width: 50%"></div>
+                    <div class="control-group">
+                        <label>☀️ 光照</label>
+                        <div class="control-adjusters">
+                            <button class="control-btn control-btn--minus" data-type="light" data-delta="-3" aria-label="减少光照">-</button>
+                            <div class="control-display" id="light-display">50%</div>
+                            <button class="control-btn control-btn--plus" data-type="light" data-delta="3" aria-label="增加光照">+</button>
+                        </div>
+                        <div class="control-meter" aria-hidden="true">
+                            <div id="light-meter-fill" class="control-meter-fill light-fill" style="width: 50%"></div>
+                        </div>
                     </div>
-                    <div class="optimal-range" id="water-optimal"></div>
-                </div>
-                <div class="control-group">
-                    <label><span class="icon-placeholder">☀️</span> 光照 <span id="light-val">50</span>%</label>
-                    <div class="control-adjusters">
-                        <button class="control-btn control-btn--minus" data-type="light" data-delta="-3" aria-label="减少光照">-</button>
-                        <div class="control-display" id="light-display">50%</div>
-                        <button class="control-btn control-btn--plus" data-type="light" data-delta="3" aria-label="增加光照">+</button>
-                    </div>
-                    <div class="control-meter" aria-hidden="true">
-                        <div id="light-meter-fill" class="control-meter-fill light-fill" style="width: 50%"></div>
-                    </div>
-                    <div class="optimal-range" id="light-optimal"></div>
                 </div>
                 <div id="optimal-hint" class="optimal-hint">
-                    💡 照料提示：水分 <span id="hint-water-text">--</span> ｜ 光照 <span id="hint-light-text">--</span>
+                    💡 <span id="hint-water-text">--</span> ｜ <span id="hint-light-text">--</span>
                 </div>
             </div>
 
