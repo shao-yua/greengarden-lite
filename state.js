@@ -25,6 +25,7 @@ export const state = {
     buffs: 0,
     penalty: 0,
     eventActive: false,
+    eventQuestion: null,
     score: 0,
     quizCount: 0,
     correctCount: 0,
@@ -55,6 +56,7 @@ export function loadState() {
             if (!state.achievements) state.achievements = [];
             if (!state.weather) state.weather = createDefaultWeather();
             if (state.harvestShown === undefined) state.harvestShown = false;
+            if (state.eventQuestion === undefined) state.eventQuestion = null;
             return true;
         } catch (e) {
             console.error("Save file corrupted", e);
@@ -78,11 +80,13 @@ export function resetState() {
     state.penalty = 0;
     state.eventActive = false;
     state.eventType = null;
+    state.eventQuestion = null;
     state.streak = 0;
     state.maxStreak = 0;
     state.streakTicks = 0;
     state.challenge = null;
     state.weather = createDefaultWeather();
+    state.eventQuestion = null;
     state.harvestShown = false;
     state.score = 0;
     state.quizCount = 0;

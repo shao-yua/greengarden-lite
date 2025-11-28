@@ -30,11 +30,11 @@ const els = {
     feedbackBtn: document.getElementById('feedback-btn'),
     streakCurrent: document.getElementById('streak-current'),
     streakBest: document.getElementById('streak-best'),
+    weatherCard: document.getElementById('weather-card'),
     weatherIcon: document.getElementById('weather-icon'),
     weatherName: document.getElementById('weather-name'),
-    weatherDesc: document.getElementById('weather-desc'),
     weatherTimer: document.getElementById('weather-timer'),
-    challengeDesc: document.getElementById('challenge-desc'),
+    challengeCard: document.getElementById('challenge-card'),
     challengeProgressBar: document.getElementById('challenge-progress-bar'),
     challengeProgressText: document.getElementById('challenge-progress-text'),
     challengeStatus: document.getElementById('challenge-status'),
@@ -64,7 +64,11 @@ const els = {
     lightMeterFill: document.getElementById('light-meter-fill'),
     harvestCardContainer: document.getElementById('harvest-card-container'),
     harvestCardPreview: document.getElementById('harvest-card-preview'),
-    harvestCardDownload: document.getElementById('harvest-card-download')
+    harvestCardDownload: document.getElementById('harvest-card-download'),
+    detailCard: document.getElementById('detail-card'),
+    detailCardTitle: document.getElementById('detail-card-title'),
+    detailCardText: document.getElementById('detail-card-text'),
+    detailCardClose: document.getElementById('detail-card-close')
 };
 
 function clampStageIndex(cropData, stageIndex) {
@@ -111,6 +115,7 @@ const cropSortOrder = {
 let journalKnowledgeCache = [];
 let journalCurrentFilter = 'all';
 let journalSelectedId = null;
+let detailCardTimer = null;
 
 function getCropName(cropId) {
     return cropNameMap[cropId] || '未知作物';
@@ -302,6 +307,7 @@ function updateJournalDetail(card, unlocked) {
 }
 
 export function closeModal() {
+    hideDetailCard();
     els.modal.classList.add('hidden');
     if (els.knowledgeSection) els.knowledgeSection.classList.add('hidden');
     if (els.quizSection) els.quizSection.classList.add('hidden');
@@ -344,11 +350,108 @@ function describeLightRange(range) {
     return '保持均衡光照';
 }
 
+function buildWeatherDetail(weather) {
+    if (!weather) return '暂无天气信息，继续保持日常养护即可。';
+    const lines = [];
+    if (weather.desc) lines.push(weather.desc);
+    const hints = [];
+    const effects = weather.effects || {};
+    if (typeof effects.waterDrift === 'number') {
+        if (effects.waterDrift > 0) {
+            hints.push('水分更容易积聚，注意防止积水');
+        } else if (effects.waterDrift < 0) {
+            hints.push('水分蒸发偏快，适当补水');
+        }
+    }
+    if (typeof effects.lightDrift === 'number') {
+        if (effects.lightDrift > 0) {
+            hints.push('光照更强，留意遮阴');
+        } else if (effects.lightDrift < 0) {
+            hints.push('光照偏弱，可补充灯光');
+        }
+    }
+    if (typeof effects.bonus === 'number' && effects.bonus > 0) {
+        hints.push(`阶段成长加速 +${Math.round(effects.bonus * 1000) / 10}%`);
+    }
+    if (typeof effects.penalty === 'number' && effects.penalty > 0) {
+        hints.push(`可能造成减益 ${Math.round(effects.penalty * 1000) / 10}%`);
+    }
+    if (hints.length) lines.push(hints.join('，'));
+    return lines.join(' ');
+}
+
+function buildChallengeDetail(challenge) {
+    if (!challenge) return '暂无挑战，保持稳定照料即可继续成长。';
+    const lines = [];
+    if (challenge.description) lines.push(challenge.description);
+    if (challenge.target) {
+        lines.push(`目标：完成 ${challenge.target} 次，当前 ${challenge.progress || 0} 次`);
+    }
+    if (typeof challenge.reward === 'number') {
+        lines.push(`奖励：阶段成长加速 +${Math.round(challenge.reward * 1000) / 10}%`);
+    }
+    return lines.join(' ');
+}
+
+function showDetailCard(title, text) {
+    if (!els.detailCard || !els.detailCardTitle || !els.detailCardText) return;
+    els.detailCardTitle.textContent = title || '详细说明';
+    els.detailCardText.textContent = text || '暂无详细介绍';
+    els.detailCard.classList.remove('hidden');
+    if (detailCardTimer) {
+        clearTimeout(detailCardTimer);
+    }
+    detailCardTimer = setTimeout(() => {
+        hideDetailCard();
+    }, 8000);
+}
+
+function hideDetailCard() {
+    if (!els.detailCard) return;
+    els.detailCard.classList.add('hidden');
+    if (detailCardTimer) {
+        clearTimeout(detailCardTimer);
+        detailCardTimer = null;
+    }
+}
+
+function attachInfoCardInteraction(el, fallbackTitle) {
+    if (!el || el.dataset.infoBound === 'true') return;
+    const openDetail = () => {
+        const title = el.dataset.detailTitle || fallbackTitle || '详细说明';
+        const text = el.dataset.detailText || '暂无详细介绍';
+        showDetailCard(title, text);
+    };
+    el.addEventListener('click', openDetail);
+    el.addEventListener('keydown', evt => {
+        if (evt.key === 'Enter' || evt.key === ' ') {
+            evt.preventDefault();
+            openDetail();
+        }
+    });
+    el.dataset.infoBound = 'true';
+}
+
 if (els.modalCloseBtn) {
     els.modalCloseBtn.addEventListener('click', () => {
         closeModal();
     });
 }
+
+if (els.detailCardClose) {
+    els.detailCardClose.addEventListener('click', () => {
+        hideDetailCard();
+    });
+}
+
+document.addEventListener('keydown', evt => {
+    if (evt.key === 'Escape') {
+        hideDetailCard();
+    }
+});
+
+attachInfoCardInteraction(els.weatherCard, '当前天气');
+attachInfoCardInteraction(els.challengeCard, '照料挑战');
 
 export function showStartScreen(crops, onSelect) {
     // 确保元素存在
@@ -419,13 +522,19 @@ export function updateUI(cropData, solarTerms) {
     els.term.textContent = `节气: ${term ? term.name : '--'}`;
 
     const weather = state.weather || null;
-    if (weather && els.weatherIcon && els.weatherName && els.weatherDesc && els.weatherTimer) {
+    if (weather && els.weatherIcon && els.weatherName && els.weatherTimer) {
         els.weatherIcon.textContent = weather.icon || '☀️';
         els.weatherName.textContent = weather.name || '当地气候';
-        els.weatherDesc.textContent = weather.desc || '气候变化带来新的挑战。';
         const daysLeft = weather.daysLeft != null ? weather.daysLeft : 0;
         const remaining = Math.max(0, Math.round(daysLeft));
         els.weatherTimer.textContent = remaining > 0 ? `剩余 ${remaining} 天` : '今日变更';
+        if (els.weatherCard) {
+            els.weatherCard.dataset.detailTitle = `${weather.name || '当前天气'} · 提示`;
+            els.weatherCard.dataset.detailText = buildWeatherDetail(weather);
+        }
+    } else if (els.weatherCard) {
+        els.weatherCard.dataset.detailTitle = '当前天气';
+        els.weatherCard.dataset.detailText = '暂无天气数据，稍后再试。';
     }
 
     const stage = cropData.stages[state.stageIndex];
@@ -473,13 +582,12 @@ export function updateUI(cropData, solarTerms) {
     }
 
     // 挑战信息
-    if (els.challengeDesc && els.challengeProgressBar && els.challengeProgressText && els.challengeStatus) {
+    if (els.challengeProgressBar && els.challengeProgressText && els.challengeStatus) {
         const challenge = (state.challenge && state.crop && state.challenge.cropId === state.crop.id && state.challenge.stageIndex === state.stageIndex)
             ? state.challenge
             : null;
 
         if (challenge) {
-            els.challengeDesc.textContent = challenge.description;
             const pct = challenge.target ? Math.min(100, (challenge.progress / challenge.target) * 100) : 0;
             els.challengeProgressBar.style.width = `${pct}%`;
             els.challengeProgressText.textContent = `${challenge.progress} / ${challenge.target}`;
@@ -491,12 +599,19 @@ export function updateUI(cropData, solarTerms) {
                 els.challengeStatus.textContent = '进行中';
                 els.challengeStatus.className = 'challenge-status pending';
             }
+            if (els.challengeCard) {
+                els.challengeCard.dataset.detailTitle = '本阶段照料挑战';
+                els.challengeCard.dataset.detailText = buildChallengeDetail(challenge);
+            }
         } else {
-            els.challengeDesc.textContent = '暂无挑战，继续专注照料吧！';
             els.challengeProgressBar.style.width = '0%';
             els.challengeProgressText.textContent = '0 / 0';
             els.challengeStatus.textContent = '--';
             els.challengeStatus.className = 'challenge-status pending';
+            if (els.challengeCard) {
+                els.challengeCard.dataset.detailTitle = '本阶段照料挑战';
+                els.challengeCard.dataset.detailText = buildChallengeDetail(null);
+            }
         }
     }
 }

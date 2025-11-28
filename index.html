@@ -27,47 +27,52 @@
         </header>
 
         <main>
-            <div class="weather-card">
-                <div class="weather-icon" id="weather-icon">☀️</div>
-                <div class="weather-info">
-                    <h3 id="weather-name">晴空微风</h3>
-                    <p id="weather-desc">阳光稳定，蒸发稍快</p>
-                </div>
-                <span id="weather-timer" class="weather-timer">剩余 2 天</span>
-            </div>
-
             <div class="crop-container">
-                <div id="crop-visual" class="crop-visual stage-0"></div>
-                <div class="stage-info">
-                    <h2 id="stage-name">播种期</h2>
-                    <div class="progress-bar-bg">
-                        <div id="progress-bar" class="progress-bar-fill" style="width: 0%"></div>
+                <div class="crop-visual-col">
+                    <div id="crop-visual" class="crop-visual stage-0"></div>
+                    <div id="event-area" class="event-area hidden">
+                        <button id="event-btn" class="event-btn">⚠️ 发现病虫害!</button>
                     </div>
-                    <span id="progress-text">0%</span>
+                </div>
+                <div class="crop-info-col">
+                    <div id="weather-card" class="weather-card inline info-card" role="button" tabindex="0" aria-label="查看天气详情">
+                        <div class="weather-icon" id="weather-icon">☀️</div>
+                        <div class="weather-info">
+                            <h3 id="weather-name">晴空微风</h3>
+                        </div>
+                        <span id="weather-timer" class="weather-timer">剩余 2 天</span>
+                    </div>
+                    <div class="stage-info">
+                        <h2 id="stage-name">播种期</h2>
+                        <div class="progress-bar-bg">
+                            <div id="progress-bar" class="progress-bar-fill" style="width: 0%"></div>
+                        </div>
+                        <span id="progress-text">0%</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="stats-grid">
+            <div class="streak-challenge-row">
                 <div class="streak-card">
-                    <div class="streak-title">🌈 连击</div>
-                    <div class="streak-values"><span id="streak-current">0</span> / 最高 <span id="streak-best">0</span></div>
+                    <div class="streak-title">🌈 连击养护</div>
+                    <div class="streak-values">当前 <span id="streak-current">0</span> 轮 ｜ 最高 <span id="streak-best">0</span> 轮</div>
                 </div>
-
-                <div class="challenge-card">
-                    <div class="challenge-header">🎯 挑战</div>
+                <div id="challenge-card" class="challenge-card info-card" role="button" tabindex="0" aria-label="查看挑战详情">
+                    <div class="challenge-header">🎯 本阶段照料挑战</div>
                     <div class="challenge-progress">
                         <div class="progress-bar-bg slim">
                             <div id="challenge-progress-bar" class="progress-bar-fill challenge-fill" style="width: 0%"></div>
                         </div>
-                        <span id="challenge-progress-text">0/0</span>
+                        <span id="challenge-progress-text">0 / 0</span>
                     </div>
+                    <span id="challenge-status" class="challenge-status pending">进行中</span>
                 </div>
             </div>
 
             <div class="controls-container">
-                <div class="controls-grid">
+                <div class="control-columns">
                     <div class="control-group">
-                        <label>💧 水分</label>
+                        <label><span class="icon-placeholder">💧</span> 水分 <span id="water-val">50</span>%</label>
                         <div class="control-adjusters">
                             <button class="control-btn control-btn--minus" data-type="water" data-delta="-3" aria-label="减少水分">-</button>
                             <div class="control-display" id="water-display">50%</div>
@@ -76,9 +81,10 @@
                         <div class="control-meter" aria-hidden="true">
                             <div id="water-meter-fill" class="control-meter-fill water-fill" style="width: 50%"></div>
                         </div>
+                        <div class="optimal-range" id="water-optimal"></div>
                     </div>
                     <div class="control-group">
-                        <label>☀️ 光照</label>
+                        <label><span class="icon-placeholder">☀️</span> 光照 <span id="light-val">50</span>%</label>
                         <div class="control-adjusters">
                             <button class="control-btn control-btn--minus" data-type="light" data-delta="-3" aria-label="减少光照">-</button>
                             <div class="control-display" id="light-display">50%</div>
@@ -87,21 +93,27 @@
                         <div class="control-meter" aria-hidden="true">
                             <div id="light-meter-fill" class="control-meter-fill light-fill" style="width: 50%"></div>
                         </div>
+                        <div class="optimal-range" id="light-optimal"></div>
                     </div>
                 </div>
                 <div id="optimal-hint" class="optimal-hint">
-                    💡 <span id="hint-water-text">--</span> ｜ <span id="hint-light-text">--</span>
+                    💡 照料提示：水分 <span id="hint-water-text">--</span> ｜ 光照 <span id="hint-light-text">--</span>
                 </div>
             </div>
 
-            <div id="event-area" class="event-area hidden">
-                <button id="event-btn" class="event-btn">⚠️ 发现病虫害!</button>
+            <div id="detail-card" class="detail-card hidden" role="dialog" aria-live="polite" aria-modal="false">
+                <div class="detail-card-header">
+                    <h4 id="detail-card-title">详细说明</h4>
+                    <button id="detail-card-close" class="detail-card-close" type="button" aria-label="关闭提示">×</button>
+                </div>
+                <p id="detail-card-text">...</p>
             </div>
+
         </main>
 
         <footer>
             <button id="share-btn">分享二维码</button>
-            <button id="journal-btn-game">图鉴</button>
+            <button id="journal-btn-game">📖 图鉴</button>
             <button id="restart-btn" style="color: #F44336; border-color: #F44336;">重开</button>
         </footer>
 
