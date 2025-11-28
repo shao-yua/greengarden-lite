@@ -328,6 +328,7 @@ function startGameLoop() {
     
     // 设定：Tick 每 100ms 运行一次
     setInterval(() => {
+        if (state.isPaused) return;
         if (!state.crop || state.stageIndex >= state.crop.stages.length) return; // 已结束
 
         applyWeatherDrift();
@@ -357,7 +358,9 @@ function startGameLoop() {
                     card = availableCards[Math.floor(Math.random() * availableCards.length)];
                 }
 
+                state.isPaused = true;
                 showKnowledgeCard(card, (success) => {
+                    state.isPaused = false;
                     // 答题结束后才正式进入下一阶段
                     state.stageIndex++;
                     ensureChallenge(true);
@@ -381,7 +384,7 @@ function startGameLoop() {
 
     // 时间循环：每 10 秒增加一天
     setInterval(() => {
-        if (state.crop && state.stageIndex < state.crop.stages.length) {
+        if (!state.isPaused && state.crop && state.stageIndex < state.crop.stages.length) {
             advanceDay(solarTermsData);
             tickWeatherDay();
         }

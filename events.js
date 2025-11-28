@@ -141,6 +141,7 @@ function handleEventClick(type) {
     const question = state.eventQuestion || selectEventQuestion(type, state.stageIndex);
     if (!question) return;
     state.eventQuestion = question;
+    state.isPaused = true;
 
     showModal(question.title, "", true);
     
@@ -199,5 +200,6 @@ function resolveEvent() {
     state.eventQuestion = null;
     state.penalty = 0;
     state.buffs += 0.05; // 解决奖励
+    state.isPaused = false;
     closeModal();
 }

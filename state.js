@@ -24,6 +24,7 @@ export const state = {
     solarTermIndex: 0,
     buffs: 0,
     penalty: 0,
+    isPaused: false,
     eventActive: false,
     eventQuestion: null,
     score: 0,
@@ -57,6 +58,7 @@ export function loadState() {
             if (!state.weather) state.weather = createDefaultWeather();
             if (state.harvestShown === undefined) state.harvestShown = false;
             if (state.eventQuestion === undefined) state.eventQuestion = null;
+            if (state.isPaused === undefined) state.isPaused = false;
             return true;
         } catch (e) {
             console.error("Save file corrupted", e);
@@ -78,6 +80,7 @@ export function resetState() {
     state.day = 1;
     state.buffs = 0;
     state.penalty = 0;
+    state.isPaused = false;
     state.eventActive = false;
     state.eventType = null;
     state.eventQuestion = null;

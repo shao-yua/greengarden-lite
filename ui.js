@@ -308,6 +308,7 @@ function updateJournalDetail(card, unlocked) {
 
 export function closeModal() {
     hideDetailCard();
+    state.isPaused = false;
     els.modal.classList.add('hidden');
     if (els.knowledgeSection) els.knowledgeSection.classList.add('hidden');
     if (els.quizSection) els.quizSection.classList.add('hidden');
